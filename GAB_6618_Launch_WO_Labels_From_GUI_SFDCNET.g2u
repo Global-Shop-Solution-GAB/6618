@@ -1,0 +1,60 @@
+﻿Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+Function.Intrinsic.UI.UsePixels ' Allows you to use Pixels instead of Twips throughout
+
+'by Josh Withrow
+'2022-02-04
+
+'Launch WO Labels from Legacy GUI
+''Attach to...
+'	Populate: 15710
+'	Script 1: 15760 Async
+'	Script 2: 15770 Async
+'	Script 3: 15780 Async
+
+'Launch WO Labels from SFDC.NET
+''Attach to...
+'	Populate: 49710
+'	Script 1: 49760 Async
+'	Script 2: 49761 Async
+'	Script 3: 49762 Async
+
+'//////////////////////////////////////////////////////////////////////////////////////////////////
+V.Local..BulkDeclareString(sScriptButtons)
+V.Local..BulkDeclareLong(iRet)
+
+'//////////////////////////////////////////////////////////////////////////////////////////////////
+'If called from Legacy GUI Populate Hook, change button text.
+F.Intrinsic.Control.If(V.Caller.Hook,=,15710)
+	'Script 1
+	'V.Passed.000016.Set("WO Label")
+	
+	'Script 2
+	'V.Passed.000020.Set("WO Label")
+	
+	'Script 3
+	V.Passed.000021.Set("WO Label")
+	
+	'Label Caption/Text Set...  Exit Program.
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndIf
+
+'//////////////////////////////////////////////////////////////////////////////////////////////////
+'If called from SFDC.NET Populate Hook, change button text.
+F.Intrinsic.Control.If(V.Caller.Hook,=,49710)
+	F.Intrinsic.String.Replace(V.Passed.MainFormView-windowsUIButtonPanel-1,"Script 3","WO Label",v.Local.sScriptButtons)
+	V.Passed.MainFormView-windowsUIButtonPanel-1.Set(V.Local.sScriptButtons)
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndIf
+
+'//////////////////////////////////////////////////////////////////////////////////////////////////
+'Launch SO Labels Screen
+F.Global.General.LaunchMenuTask(593,V.Local.iRet)
+Program.Sub.Main.End
+
+Program.Sub.Comments.Start
+${$5$}$2.0.0.0$}$2
+${$6$}$jwithrow$}$20220204123425303$}$D95tSYIikIvF+oq+s87EtBQePACEH+EyDs2gPmW3WNr9D2d1KPULWMeT0nzZAuxkMnol+dqDC3zSpm7Dt7IwgQ==
+Program.Sub.Comments.End
